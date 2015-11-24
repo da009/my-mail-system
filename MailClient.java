@@ -31,14 +31,14 @@ public class MailClient
      */
     public void printNextMailItem()
     {
-        MailItem item = server.getNextMailItem(user);
-        if(item == null)
+        MailItem correo = server.getNextMailItem(user);
+        if(correo == null)
         {
             System.out.println("No hay correo.");
         }
         else
         {
-            item.print();
+            correo.print();
         }
     }
     
