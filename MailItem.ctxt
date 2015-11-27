@@ -1,6 +1,6 @@
 #BlueJ class context
-comment0.params=from\ to\ message
-comment0.target=MailItem(java.lang.String,\ java.lang.String,\ java.lang.String)
+comment0.params=from\ to\ subject\ message
+comment0.target=MailItem(java.lang.String,\ java.lang.String,\ java.lang.String,\ java.lang.String)
 comment0.text=\r\n\ Objeto\ MailItem\r\n
 comment1.params=
 comment1.target=java.lang.String\ getFrom()
@@ -9,9 +9,12 @@ comment2.params=
 comment2.target=java.lang.String\ getTo()
 comment2.text=\r\n\ Devuelve\ el\ to\r\n
 comment3.params=
-comment3.target=java.lang.String\ getMessage()
-comment3.text=\r\n\ Devuelve\ el\ texto\ del\ correo\r\n
+comment3.target=java.lang.String\ getSubject()
+comment3.text=\r\n\ Devuelve\ el\ asunto\r\n
 comment4.params=
-comment4.target=void\ print()
-comment4.text=\r\n\ M\u00E9todo\ print\ que\ sin\ par\u00E1metros\ y\ que\ muestra\ por\ pantalla\ los\ atributos\ del\ objeto.\r\n
-numComments=5
+comment4.target=java.lang.String\ getMessage()
+comment4.text=\r\n\ Devuelve\ el\ texto\ del\ correo\r\n
+comment5.params=
+comment5.target=void\ print()
+comment5.text=\r\n\ M\u00E9todo\ print\ que\ sin\ par\u00E1metros\ y\ que\ muestra\ por\ pantalla\ los\ atributos\ del\ objeto.\r\n
+numComments=6
