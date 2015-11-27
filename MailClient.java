@@ -32,6 +32,15 @@ public class MailClient
     public void printNextMailItem()
     {
         MailItem correo = server.getNextMailItem(user);
+        if (howManyMailItems() > 1)
+            {
+                server.getNextMailItem(user);
+            }
+        else
+        {
+            correo.print();
+        }
+            
         if(correo == null)
         {
             System.out.println("No hay correo.");
@@ -57,5 +66,17 @@ public class MailClient
     public int howManyMailItems()
     {
         return server.howManyMailItems(user);
+    }
+    
+    /**
+     * Responde automáticamente al correo.
+     */
+    public void getNextMailItemAndSendAutomaticRespond()
+    {
+        MailItem correo = server.getNextMailItem(user);
+        if(correo != null)
+        {
+            sendMailItem(correo.getFrom(), "Re:" + correo.getSubject(), "esoty en la oficina.\n" + correo.getMessage());
+        }
     }
 }
