@@ -11,6 +11,8 @@ public class MailClient
     private MailServer server;
     // Destinatario del correo.
     private String user;
+    // Ultimo correo.
+    private MailItem ultimo;
     
     public MailClient(MailServer server, String user)
     {
@@ -23,6 +25,7 @@ public class MailClient
      */
     public MailItem getNextMailItem()
     {
+        ultimo = getNextMailItem();
         return server.getNextMailItem(user);
     }
     
@@ -32,15 +35,7 @@ public class MailClient
     public void printNextMailItem()
     {
         MailItem correo = server.getNextMailItem(user);
-        if (howManyMailItems() > 1)
-            {
-                server.getNextMailItem(user);
-            }
-        else
-        {
-            correo.print();
-        }
-            
+        ultimo = getNextMailItem();
         if(correo == null)
         {
             System.out.println("No hay correo.");
@@ -57,7 +52,6 @@ public class MailClient
     public void sendMailItem(String to, String subject, String message)
     {
         MailItem correo = new MailItem(user, to, subject, message);
-        server.post(correo);
     }
     
     /**
@@ -74,9 +68,10 @@ public class MailClient
     public void getNextMailItemAndSendAutomaticRespond()
     {
         MailItem correo = server.getNextMailItem(user);
+        ultimo = getNextMailItem();
         if(correo != null)
         {
-            sendMailItem(correo.getFrom(), "Re:" + correo.getSubject(), "esoty en la oficina.\n" + correo.getMessage());
+            sendMailItem(correo.getFrom(), "Re:" + correo.getSubject(), "esoty en la oficina.\n" + correo.getMessage());;
         }
     }
 }
