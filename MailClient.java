@@ -50,4 +50,12 @@ public class MailClient
         MailItem correo = new MailItem(user, to, subject, message);
         server.post(correo);
     }
+    
+    /**
+     * Nos muestra el nº de correos q tiene el cliente.
+     */
+    public int howManyMailItems()
+    {
+        return server.howManyMailItems(user);
+    }
 }
