@@ -47,7 +47,7 @@ public class MailClient
      */
     public void sendMailItem(String to, String message)
     {
-        MailItem item = new MailItem(user, to, message);
-        server.post(item);
+        MailItem correo = new MailItem(user, to, message);
+        server.post(correo);
     }
 }

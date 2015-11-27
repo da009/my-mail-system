@@ -1,5 +1,5 @@
 #BlueJ class context
-comment0.params=from1\ to1\ message1
+comment0.params=from\ to\ message
 comment0.target=MailItem(java.lang.String,\ java.lang.String,\ java.lang.String)
 comment0.text=\r\n\ Objeto\ MailItem\r\n
 comment1.params=
