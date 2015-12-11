@@ -13,6 +13,10 @@ public class MailClient
     private String user;
     // Ultimo correo.
     private MailItem ultimo;
+    // Spam
+    private MailItem spam;
+    // Guarda el boolean como true si es spam
+    private boolean esSpam;
     
     public MailClient(MailServer server, String user)
     {
@@ -25,8 +29,16 @@ public class MailClient
      */
     public MailItem getNextMailItem()
     {
-        ultimo = getNextMailItem();
-        return server.getNextMailItem(user);
+        if (esSpam == true)
+        {
+            return null;
+        }
+        else
+        {
+            ultimo = getNextMailItem();
+            return server.getNextMailItem(user);
+        }
+    }
     }
     
     /**
@@ -34,15 +46,22 @@ public class MailClient
      */
     public void printNextMailItem()
     {
-        MailItem correo = server.getNextMailItem(user);
-        ultimo = getNextMailItem();
-        if(correo == null)
+        if (esSpam == false)
         {
-            System.out.println("No hay correo.");
+            MailItem correo = server.getNextMailItem(user);
+            ultimo = getNextMailItem();
+            if(correo == null)
+            {
+                System.out.println("No hay correo.");
+            }
+            else
+            {
+                correo.print();
+            }
         }
-        else
+        else 
         {
-            correo.print();
+            System.out.println("Ha recibido spam");
         }
     }
     
@@ -57,9 +76,9 @@ public class MailClient
     /**
      * Nos muestra el nº de correos q tiene el cliente.
      */
-    public int howManyMailItems()
+    public void howManyMailItems()
     {
-        return server.howManyMailItems(user);
+        System.out.println("Emails pendientes en el servidor: " + server.howManyMailItems(user));
     }
     
     /**
@@ -67,11 +86,30 @@ public class MailClient
      */
     public void getNextMailItemAndSendAutomaticRespond()
     {
-        MailItem correo = server.getNextMailItem(user);
-        ultimo = getNextMailItem();
-        if(correo != null)
+            MailItem correo = server.getNextMailItem(user);
+            ultimo = getNextMailItem();
+            if(correo != null)
+            {
+                sendMailItem(correo.getFrom(), "Re:" + correo.getSubject(), "Esoty en la oficina.\n" + correo.getMessage());;
+            }
+    }
+    
+    /**
+     * Detecta el spam
+     */
+    public void DetSpam()
+    {
+        if (spam.getMessage().contains("regalo") || spam.getMessage().contains("promoción"))
         {
-            sendMailItem(correo.getFrom(), "Re:" + correo.getSubject(), "esoty en la oficina.\n" + correo.getMessage());;
+            esSpam = true;
+            if (spam.getMessage().contains("trabajo"))
+            {
+                esSpam = false;
+            }
+        }
+        else
+        {
+            esSpam = true;
         }
     }
 }
