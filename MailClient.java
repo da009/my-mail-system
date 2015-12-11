@@ -1,4 +1,3 @@
-
 /**
  * Write a description of class MailClient here.
  * 
@@ -17,6 +16,16 @@ public class MailClient
     private MailItem spam;
     // Guarda el boolean como true si es spam
     private boolean esSpam;
+    // Almacena el número de mensajes de spam recibidos
+    private int ContadorSpam;
+    // Almacena el número de correos enviados
+    private int ContadorEnviados;
+    // Almacena el número de mensajes recibidos
+    private int ContadorRecibidos;
+    // Longitud máxima de mensaje recibido
+    private int numCarMes;
+    // Usuario que envió el correo más largo
+    private String maxUsr;
     
     public MailClient(MailServer server, String user)
     {
@@ -29,6 +38,9 @@ public class MailClient
      */
     public MailItem getNextMailItem()
     {
+        ContadorRecibidos = ContadorRecibidos + 1;
+        DetSpam();
+        maxMes();
         if (esSpam == true)
         {
             return null;
@@ -39,13 +51,14 @@ public class MailClient
             return server.getNextMailItem(user);
         }
     }
-    }
     
     /**
      * Recupera el MailItem y si no hay muestra un mensaje de error.
      */
     public void printNextMailItem()
     {
+        DetSpam();
+        maxMes();
         if (esSpam == false)
         {
             MailItem correo = server.getNextMailItem(user);
@@ -71,6 +84,8 @@ public class MailClient
     public void sendMailItem(String to, String subject, String message)
     {
         MailItem correo = new MailItem(user, to, subject, message);
+        showStats();
+        ContadorEnviados = ContadorEnviados +1;
     }
     
     /**
@@ -86,12 +101,13 @@ public class MailClient
      */
     public void getNextMailItemAndSendAutomaticRespond()
     {
-            MailItem correo = server.getNextMailItem(user);
-            ultimo = getNextMailItem();
-            if(correo != null)
-            {
-                sendMailItem(correo.getFrom(), "Re:" + correo.getSubject(), "Esoty en la oficina.\n" + correo.getMessage());;
-            }
+        MailItem correo = server.getNextMailItem(user);
+        ultimo = getNextMailItem();
+        showStats();
+        if(correo != null)
+        {
+            sendMailItem(correo.getFrom(), "Re:" + correo.getSubject(), "Esoty en la oficina.\n" + correo.getMessage());;
+        }
     }
     
     /**
@@ -102,6 +118,7 @@ public class MailClient
         if (spam.getMessage().contains("regalo") || spam.getMessage().contains("promoción"))
         {
             esSpam = true;
+            ContadorSpam = ContadorSpam + 1;
             if (spam.getMessage().contains("trabajo"))
             {
                 esSpam = false;
@@ -109,7 +126,32 @@ public class MailClient
         }
         else
         {
-            esSpam = true;
+            esSpam = false;
         }
+    }
+    
+    /**
+     * Mensaje mas largo
+     */
+    public void maxMes()
+    {
+        MailItem correo = server.getNextMailItem(user);
+        if (numCarMes < correo.getMessage().length())
+        {
+            numCarMes = correo.getMessage().length();
+            maxUsr = correo.getSubject();
+        }
+    }
+    
+    /**
+     * Estadísticas de mensajes
+     */
+    public void showStats()
+    {
+        System.out.println("Son spam " + ContadorSpam + " mensajes");
+        System.out.println("Has enviado " + ContadorEnviados + " mensajes");
+        System.out.println("Has recibido " + ContadorRecibidos + " mensajes");
+        System.out.println("El " + ContadorRecibidos / ContadorSpam + "% son spam");
+        System.out.println("El mensaje más largo recibido es de " + maxUsr + " y consta de " + numCarMes + " caracteres");
     }
 }
