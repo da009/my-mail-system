@@ -26,6 +26,8 @@ public class MailClient
     private int numCarMes;
     // Usuario que envió el correo más largo
     private String maxUsr;
+    // Último mensaje de spam recibido
+    private MailItem UltSpam;
     
     public MailClient(MailServer server, String user)
     {
@@ -119,6 +121,7 @@ public class MailClient
         {
             esSpam = true;
             ContadorSpam = ContadorSpam + 1;
+            UltSpam = ultimo;
             if (spam.getMessage().contains("trabajo"))
             {
                 esSpam = false;
@@ -153,5 +156,17 @@ public class MailClient
         System.out.println("Has recibido " + ContadorRecibidos + " mensajes");
         System.out.println("El " + ContadorRecibidos / ContadorSpam + "% son spam");
         System.out.println("El mensaje más largo recibido es de " + maxUsr + " y consta de " + numCarMes + " caracteres");
+    }
+    
+    /**
+     * Muestra la información del ultmo correo de spam, si no hay se informa de ello
+     */
+    public void showInfoLastSpam()
+    {
+        System.out.print(UltSpam);
+        if (UltSpam == null)
+        {
+            System.out.print("No se ha recibido spam por el momento");
+        }
     }
 }
